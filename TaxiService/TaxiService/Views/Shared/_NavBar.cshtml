@@ -1,0 +1,64 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @if (Session["User"] != null)
+            {
+                @Html.ActionLink("Taxi Service", "Home", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            }
+            else
+            {
+                @Html.ActionLink("Taxi Service", "SignIn", "Login", new { area = "" }, new { @class = "navbar-brand" })
+            }
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+                @if (Session["User"] != null)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">Home <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Home", "Home", "Home")</li>
+                            <li>@Html.ActionLink("Search", "Search", "Home")</li>
+                        </ul>
+                    </li>
+                    if (((AppUser)Session["User"]).Role == UserRole.Dispatcher)
+                    {
+                        <li>@Html.ActionLink("Ride", "Create", "Ride")</li>
+                        <li>@Html.ActionLink("Driver", "Create", "Driver")</li>
+                    }
+                    else
+                    {
+                        if (((AppUser)Session["User"]).IsDriverBusy.Value)
+                        {
+                            <li>@Html.ActionLink("Ride", "Process", "Ride")</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Vehicle", "Edit", "Vehicle")</li>
+                            <li>@Html.ActionLink("Location", "Update", "Location")</li>
+                        }
+                    }
+                }
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                @if (Session["User"] != null)
+                {
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button">@(((AppUser)Session["User"]).Username) <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li>@Html.ActionLink("Profile", "Edit", "Profile")</li>
+                            <li role="separator" class="divider"></li>
+                            <li>@Html.ActionLink("Sign Out", "SignOut", "Login")</li>
+                        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>
+
